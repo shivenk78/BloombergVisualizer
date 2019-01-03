@@ -1,23 +1,22 @@
 //Made by Shiven Kumar using BabylonJS 101 Tutorials
-var canvas = document.getElementById("renderCanvas"); // Get the canvas element 
-var engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
-var items = [];
-var areas = [];
-var versions = [];
-var uptimes = [];
-var hostnames = [];
-var uniqueAreas = [];
-var uniqueVersions = [];
-var uptimePerArea = [];
-var uptimePerVersion = [];
+canvas = document.getElementById("renderCanvas"); // Get the canvas element 
+engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
+items = [];
+areas = [];
+versions = [];
+uptimes = [];
+hostnames = [];
+uniqueAreas = [];
+uniqueVersions = [];
+let uptimePerArea = [];
+uptimePerVersion = [];
 
 
 /******* Add the create scene function ******/
 function createScene() {
 
-        for(var i = 0; i<12; i++){
+        for(var i = 0; i<11; i++){
                 uptimePerArea.push(0);
-                uptimePerVersion.push(0);
         }
 
         // Create the scene space
@@ -52,13 +51,15 @@ function createScene() {
                         uptimePerArea[uniqueAreas.indexOf(value.area)] += parseInt(value.uptime, 10);
                         uptimePerVersion[uniqueVersions.indexOf(value.version)] += parseInt(value.uptime, 10);
                 });
+
+                var count = 0;
+                for(var i = 0; i < uptimePerArea.length; i++){
+                        var box = BABYLON.MeshBuilder.CreateBox("box", {height: parseInt(uptimePerArea[i]/10000)+0.001, width:10, depth:10}, scene);
+                        box.position = new BABYLON.Vector3(20*count, uptimePerArea[i]/20000, 0);
+                        console.log(uptimePerArea[i]);
+                        count++;
+                }
         });
-
-
-        for(var i = 0; i<uptimePerArea.length; i++){
-                var box = BABYLON.MeshBuilder.CreateBox("box", {height: parseInt(uptimePerArea[i], 10), width:1, depth:1}, scene);
-                box.position = new BABYLON.Vector3(2*i, 0, 0);
-        }
 
         return scene;
 };
