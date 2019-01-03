@@ -24,7 +24,7 @@ function createScene() {
 
         var scene = new BABYLON.Scene(engine);
         var light = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(0, -0.5, 1.0), scene);
-        var camera = new BABYLON.UniversalCamera("UniversalCamera",  BABYLON.Vector3.Zero(), scene);
+        var camera = new BABYLON.DeviceOrientationCamera("DevOr_camera",  BABYLON.Vector3.Zero(), scene);
         //camera.setPosition(new BABYLON.Vector3(20, 70, -100));
         light.position = new BABYLON.Vector3(0, 25, -50);
         camera.attachControl(canvas, true);
