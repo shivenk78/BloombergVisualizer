@@ -9,7 +9,7 @@ hostnames = [];
 uniqueAreas = [];
 uniqueVersions = [];
 let uptimePerArea = [];
-uptimePerVersion = [];
+let uptimePerVersion = [];
 
 
 /******* Add the create scene function ******/
@@ -18,11 +18,14 @@ function createScene() {
         for(var i = 0; i<11; i++){
                 uptimePerArea.push(0);
         }
+        for(var i = 0; i<54; i++){
+                uptimePerVersion.push(0);
+        }
 
         var scene = new BABYLON.Scene(engine);
         var light = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(0, -0.5, 1.0), scene);
-        var camera = new BABYLON.ArcRotateCamera("Camera", 0, 0, 10, BABYLON.Vector3.Zero(), scene);
-        camera.setPosition(new BABYLON.Vector3(20, 70, -100));
+        var camera = new BABYLON.UniversalCamera("UniversalCamera",  BABYLON.Vector3.Zero(), scene);
+        //camera.setPosition(new BABYLON.Vector3(20, 70, -100));
         light.position = new BABYLON.Vector3(0, 25, -50);
         camera.attachControl(canvas, true);
 
@@ -63,7 +66,6 @@ function createScene() {
         var areaSeries = [];
         for(var i = 0; i<uptimePerArea.length; i++){
                 var colorMod = 255-(i*(255/uptimePerArea.length));
-                console.log(colorMod);
                 areaSeries.push({label: uniqueAreas[i], value: uptimePerArea[i]/5000, color: new BABYLON.Color3(colorMod, 0, 0)});
         }
     
@@ -72,6 +74,7 @@ function createScene() {
                 var colorMod = 255-(i*(255/uptimePerVersion.length));
                 versionSeries.push({label: uniqueVersions[i], value: uptimePerVersion[i]/5000, color: new BABYLON.Color3(0, colorMod, 0)});
         }
+        console.log(versionSeries);
         
         var browsers_Series = [
                 { label: "IE", value: 32, color: new BABYLON.Color3(0, 0, 1) },
@@ -82,7 +85,6 @@ function createScene() {
             ];
 
         var currentSeries = versionSeries;
-        alert(currentSeries.length);
         var playgroundSize = 100;//currentSeries.length*20 + 50;
         var background = BABYLON.Mesh.CreatePlane("background", playgroundSize, scene, false);
         background.material = new BABYLON.StandardMaterial("background", scene);
@@ -123,7 +125,7 @@ function createScene() {
             bar.position.x = x;
             bar.position.y = 0;
             
-            // Animate a bit
+            // Animation
             var animation = new BABYLON.Animation("anim", "scaling", 30, BABYLON.Animation.ANIMATIONTYPE_VECTOR3);
             animation.setKeys([
                 { frame: 0, value: new BABYLON.Vector3(offset / 2.0, 0, offset / 2.0) },
@@ -137,7 +139,7 @@ function createScene() {
             bar.animations.push(animation);            
             scene.beginAnimation(bar, 0, 100, false, 2.0);
 
-            // Material
+            // Materials
             bar.material = new BABYLON.StandardMaterial(data.label + "mat", scene);
             bar.material.diffuseColor = data.color;
             bar.material.emissiveColor = data.color.scale(0.3);
@@ -146,7 +148,7 @@ function createScene() {
             // Shadows
             shadowGenerator.getShadowMap().renderList.push(bar);
                         
-            // Legend
+            // Graph Legend
             var barLegend = BABYLON.Mesh.CreateGround(data.label + "Legend", playgroundSize / 2, offset * 2, 1, scene, false);
             barLegend.position.x = x;
             barLegend.position.z = -playgroundSize / 4;
@@ -161,7 +163,7 @@ function createScene() {
             var size = barLegendTexture.getSize();
             barLegendTexture.drawText(data.label + " (" + data.value + "%)", 80, size.height / 2 + 30, "bold 50px Segoe UI", "white", "transparent");
             
-            // Going next
+            // Moving on to the next bar
             x += offset + margin;
         }
     };
@@ -173,7 +175,7 @@ function createScene() {
 
 
     // Limit camera
-    camera.setPosition(new BABYLON.Vector3(20, 70, -100));
+    //camera.setPosition(new BABYLON.Vector3(20, 70, -100));
     camera.lowerAlphaLimit = Math.PI;
     camera.upperAlphaLimit = 2 * Math.PI;
     camera.lowerBetaLimit = 0.1;
