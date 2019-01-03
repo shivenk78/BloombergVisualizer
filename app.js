@@ -81,37 +81,38 @@ function createScene() {
                 { label: "Safari", value: 10, color: new BABYLON.Color3(0, 1, 1) }        
             ];
 
-    var playgroundSize = 200;
-    // Background
-    var background = BABYLON.Mesh.CreatePlane("background", playgroundSize, scene, false);
-    background.material = new BABYLON.StandardMaterial("background", scene);
-    background.scaling.y = 0.5;
-    background.position.z = playgroundSize / 2 - 0.5;
-    background.position.y = playgroundSize / 4;
-    background.receiveShadows = true;
-    var backgroundTexture = new BABYLON.DynamicTexture("dynamic texture", 512, scene, true);
-    background.material.diffuseTexture = backgroundTexture;
-    background.material.specularColor = new BABYLON.Color3(0, 0, 0);
-    background.material.backFaceCulling = false;
+        var currentSeries = versionSeries;
+        alert(currentSeries.length);
+        var playgroundSize = 100;//currentSeries.length*20 + 50;
+        var background = BABYLON.Mesh.CreatePlane("background", playgroundSize, scene, false);
+        background.material = new BABYLON.StandardMaterial("background", scene);
+        background.scaling.y = 0.5;
+        background.position.z = playgroundSize / 2 - 0.5;
+        background.position.y = playgroundSize / 4;
+        background.receiveShadows = true;
+        var backgroundTexture = new BABYLON.DynamicTexture("dynamic texture", 512, scene, true);
+        background.material.diffuseTexture = backgroundTexture;
+        background.material.specularColor = new BABYLON.Color3(0, 0, 0);
+        background.material.backFaceCulling = false;
 
-    backgroundTexture.drawText("Bloomberg", null, 80, "bold 70px Segoe UI", "white", "#555555");
-    backgroundTexture.drawText("Uptime per Area", null, 250, "35px Segoe UI", "white", null);
+        backgroundTexture.drawText("Bloomberg", null, 80, "bold 70px Segoe UI", "white", "#555555");
+        backgroundTexture.drawText("Uptime per Area", null, 250, "35px Segoe UI", "white", null);
 
-    // Ground    
-    var ground = BABYLON.Mesh.CreateGround("ground", playgroundSize, playgroundSize, 1, scene, false);
-    var groundMaterial = new BABYLON.StandardMaterial("ground", scene);
-    groundMaterial.diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5);
-    groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-    ground.material = groundMaterial;
-    ground.receiveShadows = true;
-    ground.position.y = -0.1;
-    
-    var shadowGenerator = new BABYLON.ShadowGenerator(1024, light);
-	shadowGenerator.usePoissonSampling = true;
+        // Ground    
+        var ground = BABYLON.Mesh.CreateGround("ground", playgroundSize, playgroundSize, 1, scene, false);
+        var groundMaterial = new BABYLON.StandardMaterial("ground", scene);
+        groundMaterial.diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+        groundMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+        ground.material = groundMaterial;
+        ground.receiveShadows = true;
+        ground.position.y = -0.1;
+        
+        var shadowGenerator = new BABYLON.ShadowGenerator(1024, light);
+                shadowGenerator.usePoissonSampling = true;
     
     var createSeries = function (series) {
         var margin = 0.1;
-        var offset = playgroundSize / (series.length) - margin;
+        var offset = 20; //playgroundSize / (series.length) - margin;
         var x = -playgroundSize / 2 + offset / 2;
 
         for (var index = 0; index < series.length; index++) {
@@ -165,13 +166,14 @@ function createScene() {
         }
     };
 
-    createSeries(areaSeries);
+    createSeries(currentSeries);
         });
 
         camera.attachControl(canvas, true);
 
 
     // Limit camera
+    camera.setPosition(new BABYLON.Vector3(20, 70, -100));
     camera.lowerAlphaLimit = Math.PI;
     camera.upperAlphaLimit = 2 * Math.PI;
     camera.lowerBetaLimit = 0.1;
