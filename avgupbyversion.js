@@ -3,6 +3,7 @@ canvas = document.getElementById("renderCanvas"); // Get the canvas element
 engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
 items = [];
 areas = [];
+versionCounts = [];
 versions = [];
 uptimes = [];
 hostnames = [];
@@ -10,17 +11,18 @@ uniqueAreas = [];
 uniqueVersions = [];
 uptimePerArea = [];
 uptimePerVersion = [];
-totalUptime = 0;
+totalVersionCount = 0;
+DATA_SCALE = 20;
 
 
 /******* Add the create scene function ******/
 function createScene() {
 
-        for(var i = 0; i<11; i++){
-                uptimePerArea.push(0);
-        }
         for(var i = 0; i<54; i++){
                 uptimePerVersion.push(0);
+        }
+        for(var i = 0; i<54; i++){
+                versionCounts.push(0);
         }
 
         var scene = new BABYLON.Scene(engine);
@@ -50,8 +52,8 @@ function createScene() {
                                 uniqueVersions.push(value.version);
                         }
                         items.push(value);
-                        uptimePerArea[uniqueAreas.indexOf(value.area)] += parseInt(value.uptime, 10);
                         uptimePerVersion[uniqueVersions.indexOf(value.version)] += parseInt(value.uptime, 10);
+                        versionCounts[uniqueVersions.indexOf(value.version)] ++;
                 });
 
                 /*var count = 0;
@@ -63,21 +65,18 @@ function createScene() {
                 }*/
 
                 // Data
-        for(var i in uptimes){
-                totalUptime += parseInt(i, 10);
+
+        for(var i in versionCounts){
+                totalVersionCount += parseInt(i, 10);
         }
 
         var scale = 0.6;
         var areaSeries = [];
-        for(var i = 0; i<uptimePerArea.length; i++){
-                var colorMod = 255-(i*(255/uptimePerArea.length));
-                areaSeries.push({label: uniqueAreas[i], value: uptimePerArea[i]/5000, color: new BABYLON.Color3(colorMod, 0, 0)});
-        }
-    
+        console.log(versionCounts);
         var versionSeries = [];
         for(var i = 0; i<uptimePerVersion.length; i++){
                 var colorMod = 255-(i*(255/uptimePerVersion.length));
-                versionSeries.push({label: uniqueVersions[i], value: uptimePerVersion[i]/5000, color: new BABYLON.Color3(0, 0, colorMod/255)});
+                versionSeries.push({label: uniqueVersions[i], value: (uptimePerVersion[i]/DATA_SCALE)/versionCounts[i], color: new BABYLON.Color3(153/255, 51/255, 1)});
         }
         console.log(versionSeries);
         
@@ -105,7 +104,7 @@ function createScene() {
         background.material.backFaceCulling = false;
 
         backgroundTexture.drawText("Bloomberg", null, 80, "bold 70px Segoe UI", "white", "#555555");
-        backgroundTexture.drawText("Uptime per Area", null, 250, "35px Segoe UI", "white", null);
+        backgroundTexture.drawText("Average Uptime per Version", null, 250, "35px Segoe UI", "white", null);
 
         // Ground    
         var ground = BABYLON.Mesh.CreateGround("ground", 10000, 10000, 1, scene, false);
@@ -168,7 +167,7 @@ function createScene() {
             barLegend.material.emissiveColor = new BABYLON.Color3(0.4, 0.4, 0.4); 
             
             var size = barLegendTexture.getSize();
-            barLegendTexture.drawText(data.label + " (" + Number.parseFloat((data.value*500000)/totalUptime).toFixed(2) + "%)", 80, size.height / 2 + 30, "bold 50px Segoe UI", "white", "transparent");
+            barLegendTexture.drawText(data.label + " (" + Number.parseFloat((data.value*DATA_SCALE)/totalVersionCount).toFixed(2) + "%)", 80, size.height / 2 + 30, "bold 50px Segoe UI", "white", "transparent");
             
             // Moving on to the next bar
             x += offset + margin;

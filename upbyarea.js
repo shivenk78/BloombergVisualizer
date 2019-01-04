@@ -71,7 +71,7 @@ function createScene() {
         var areaSeries = [];
         for(var i = 0; i<uptimePerArea.length; i++){
                 var colorMod = 255-(i*(255/uptimePerArea.length));
-                areaSeries.push({label: uniqueAreas[i], value: uptimePerArea[i]/5000, color: new BABYLON.Color3(colorMod, 0, 0)});
+                areaSeries.push({label: uniqueAreas[i], value: uptimePerArea[i]/5000, color: new BABYLON.Color3(1, 102/255, 0)});
         }
     
         var versionSeries = [];
@@ -89,7 +89,7 @@ function createScene() {
                 { label: "Safari", value: 10, color: new BABYLON.Color3(0, 1, 1) }        
             ];
 
-        var currentSeries = versionSeries;
+        var currentSeries = areaSeries;
         var playgroundSize = 100;//currentSeries.length*20 + 50;
         camera.setTarget(new BABYLON.Vector3(playgroundSize/2, 20, -10));
 

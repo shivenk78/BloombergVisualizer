@@ -77,7 +77,7 @@ function createScene() {
         var versionSeries = [];
         for(var i = 0; i<uptimePerVersion.length; i++){
                 var colorMod = 255-(i*(255/uptimePerVersion.length));
-                versionSeries.push({label: uniqueVersions[i], value: uptimePerVersion[i]/5000, color: new BABYLON.Color3(0, 0, colorMod/255)});
+                versionSeries.push({label: uniqueVersions[i], value: uptimePerVersion[i]/5000, color: new BABYLON.Color3(0, 153/255, 255)});
         }
         console.log(versionSeries);
         
@@ -105,7 +105,7 @@ function createScene() {
         background.material.backFaceCulling = false;
 
         backgroundTexture.drawText("Bloomberg", null, 80, "bold 70px Segoe UI", "white", "#555555");
-        backgroundTexture.drawText("Uptime per Area", null, 250, "35px Segoe UI", "white", null);
+        backgroundTexture.drawText("Uptime per Version", null, 250, "35px Segoe UI", "white", null);
 
         // Ground    
         var ground = BABYLON.Mesh.CreateGround("ground", 10000, 10000, 1, scene, false);
