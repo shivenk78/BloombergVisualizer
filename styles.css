@@ -3,3 +3,19 @@
     padding-right: 40px;
     padding-top: 40px;
 }
+
+.btn{
+    background-color: slateblue;
+    border-color: white;
+}
+
+.btn:hover{
+    background-color: white;
+    color: slateblue;
+    border: slateblue;
+}
+
+body {
+    background-repeat: no-repeat;
+    background-size: 100% 300%;
+    }
