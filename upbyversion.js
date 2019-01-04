@@ -25,7 +25,7 @@ function createScene() {
 
         var scene = new BABYLON.Scene(engine);
         var light = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(0, -0.5, 1.0), scene);
-        var camera = new BABYLON.UniversalCamera("UniversalCamera", BABYLON.Vector3.Zero(), scene);
+        var camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(0, 100, -100), scene);
         camera.cameraAcceleration = 5;
         light.position = new BABYLON.Vector3(0, 25, -50);
         camera.attachControl(canvas, true);
@@ -105,7 +105,7 @@ function createScene() {
         background.material.backFaceCulling = false;
 
         backgroundTexture.drawText("Bloomberg", null, 80, "bold 70px Segoe UI", "white", "#555555");
-        backgroundTexture.drawText("Uptime per Version", null, 250, "35px Segoe UI", "white", null);
+        backgroundTexture.drawText("Total Uptime per Version", null, 250, "35px Segoe UI", "white", null);
 
         // Ground    
         var ground = BABYLON.Mesh.CreateGround("ground", 10000, 10000, 1, scene, false);
